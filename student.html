@@ -7,12 +7,25 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
+<header class="header">
+  <img src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png" class="logo" alt="ABP Logo">
+  <nav>
+    <button onclick="window.location.href='index.html'" class="btn">Home</button>
+    <button onclick="window.location.href='login.html'" class="btn">Logout</button>
+  </nav>
+</header>
+
+<div class="main-content">
+<div class="container">
     <h2>Welcome Student</h2>
     <div id="batch-info"></div>
   </div>
 
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="student.js"></script>
+</div>
+<div class="footer">
+  <p>Powered by <img alt="ABP" class="logo-inline" src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png"> ABP Classes</p>
+</div>
 </body>
 </html>
