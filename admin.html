@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel - ABP Classes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Admin Panel</h2>
+
+    <section>
+      <h3>Create Batch</h3>
+      <input type="text" id="batch-name" placeholder="Batch Name" />
+      <button onclick="createBatch()">Create</button>
+    </section>
+
+    <section>
+      <h3>Add Content to Batch</h3>
+      <input type="text" id="batch-id-subject" placeholder="Batch ID" />
+      <input type="text" id="subject-name" placeholder="Subject" />
+      <input type="text" id="content-title" placeholder="Title" />
+      <input type="text" id="content-url" placeholder="URL" />
+      <select id="content-type">
+        <option value="video">Video</option>
+        <option value="pdf">PDF</option>
+      </select>
+      <button onclick="addSubjectContent()">Add Content</button>
+    </section>
+
+    <section>
+      <h3>Assign Batch to Student</h3>
+      <input type="email" id="student-email" placeholder="Student Email" />
+      <input type="text" id="assign-batch-id" placeholder="Batch ID" />
+      <button onclick="assignBatch()">Assign</button>
+    </section>
+  </div>
+
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
