@@ -1,42 +1,62 @@
-
 body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to right, #f0f8ff, #e0f7fa);
-    margin: 0;
-    padding: 20px;
-    color: #333;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to right, #f0f8ff, #e0f7fa);
 }
-.container {
-    max-width: 800px;
-    margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+.header {
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-input, select, button {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    margin: 12px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+.logo {
+  height: 50px;
 }
-.hidden {
-    display: none;
+nav .btn {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 25px;
+  background: linear-gradient(to right, #007bff, #20c997);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
-h1, h2, h3 {
-    text-align: center;
-    color: #00796b;
+.btn:hover {
+  transform: scale(1.05);
 }
-button {
-    background-color: #00bcd4;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.features, .gallery, .team {
+  text-align: center;
+  margin: 40px 0;
 }
-button:hover {
-    background-color: #0097a7;
+.card, .member {
+  background-color: white;
+  margin: 10px auto;
+  padding: 20px;
+  width: 200px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.gallery-images img {
+  margin: 10px;
+  border-radius: 10px;
+}
+.login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+.dark-mode {
+  background: #121212;
+  color: white;
 }

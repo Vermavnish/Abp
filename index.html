@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,55 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ABP Classes</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>ABP Classes</h1>
+  <header class="header">
+    <img src="logo.png" alt="ABP Logo" class="logo">
+    <nav>
+      <button onclick="location.href='login.html'" class="btn">Login</button>
+      <button class="btn join">Join Now</button>
+      <button onclick="toggleDarkMode()" class="btn toggle">Toggle Dark Mode</button>
+    </nav>
+  </header>
 
-    <div id="auth-section">
-      <h2>Register</h2>
-      <input type="email" id="reg-email" placeholder="Email" />
-      <input type="password" id="reg-password" placeholder="Password" />
-      <button onclick="register()">Register</button>
+  <main class="main-content">
+    <section class="features">
+      <div class="card">Expert Teachers</div>
+      <div class="card">Video Lectures</div>
+      <div class="card">PDF Notes</div>
+      <div class="card">Doubt Clearing</div>
+    </section>
 
-      <h2>Login</h2>
-      <input type="email" id="login-email" placeholder="Email" />
-      <input type="password" id="login-password" placeholder="Password" />
-      <button onclick="login()">Login</button>
-    </div>
+    <section class="gallery">
+      <h2>Gallery</h2>
+      <div class="gallery-images">
+        <img src="https://via.placeholder.com/150" alt="Gallery 1" />
+        <img src="https://via.placeholder.com/150" alt="Gallery 2" />
+        <img src="https://via.placeholder.com/150" alt="Gallery 3" />
+      </div>
+    </section>
 
-    <div id="admin-panel" class="hidden">
-      <h2>Admin Panel</h2>
-      <h3>Create Batch</h3>
-      <input type="text" id="batch-name" placeholder="Batch Name" />
-      <button onclick="createBatch()">Create</button>
+    <section class="team">
+      <h2>Our Team</h2>
+      <div class="team-members">
+        <div class="member">John Doe</div>
+        <div class="member">Jane Smith</div>
+        <div class="member">Alice Johnson</div>
+      </div>
+    </section>
+  </main>
 
-      <h3>Add Subject to Batch</h3>
-      <input type="text" id="batch-id-subject" placeholder="Batch ID" />
-      <input type="text" id="subject-name" placeholder="Subject" />
-      <input type="text" id="content-title" placeholder="Title" />
-      <input type="text" id="content-url" placeholder="URL" />
-      <select id="content-type">
-        <option value="video">Video</option>
-        <option value="pdf">PDF</option>
-      </select>
-      <button onclick="addSubjectContent()">Add Content</button>
-
-      <h3>Assign Batch to Student</h3>
-      <input type="email" id="student-email" placeholder="Student Email" />
-      <input type="text" id="assign-batch-id" placeholder="Batch ID" />
-      <button onclick="assignBatch()">Assign</button>
-    </div>
-
-    <div id="student-panel" class="hidden">
-      <h2>Student Dashboard</h2>
-      <div id="student-batches"></div>
-    </div>
-
-    <button onclick="logout()">Logout</button>
-  </div>
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="app.js"></script>
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
 </body>
 </html>
