@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+</head>
+<body>
+  <h2>Welcome Student</h2>
+  <div id="batches">Loading your batches...</div>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) return location.href = "index.html";
+      const db = firebase.firestore();
+      db.collection("users").doc(user.uid).get().then(doc => {
+        const data = doc.data();
+        const batches = data?.batches || [];
+        document.getElementById("batches").innerHTML = batches.map(b => `<p>${b}</p>`).join("");
+      });
+    });
+  </script>
+</body>
+</html>

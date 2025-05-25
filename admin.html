@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Panel - ABP Classes</title>
+</head>
+<body>
+  <h2>Admin Panel - ABP Classes</h2>
+  <p>Welcome, Admin</p>
+
+  <h3>Create Batch</h3>
+  <input type="text" id="batchName" placeholder="Batch Name" />
+  <button onclick="createBatch()">Create</button>
+
+  <h3>Add Subject to Batch</h3>
+  <input type="text" id="batchForSubject" placeholder="Batch Name" />
+  <input type="text" id="subjectName" placeholder="Subject Name" />
+  <button onclick="addSubject()">Add Subject</button>
+
+  <h3>Add Content to Subject</h3>
+  <input type="text" id="batchForContent" placeholder="Batch Name" />
+  <input type="text" id="subjectForContent" placeholder="Subject Name" />
+  <input type="text" id="contentTitle" placeholder="Title" />
+  <input type="text" id="contentURL" placeholder="YouTube Link or PDF URL" />
+  <select id="contentType">
+    <option value="video">Video</option>
+    <option value="pdf">PDF</option>
+  </select>
+  <button onclick="addContent()">Add Content</button>
+
+  <h3>Assign Batch to Student</h3>
+  <input type="email" id="studentEmail" placeholder="Student Email" />
+  <input type="text" id="assignBatch" placeholder="Batch to Assign" />
+  <button onclick="assignBatch()">Assign</button>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    const db = firebase.firestore();
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user || user.email !== "pbvermaclas@gmail.com") location.href = "index.html";
+    });
+
+    function createBatch() {
+      const batchName = document.getElementById("batchName").value;
+      db.collection("batches").doc(batchName).set({ subjects: {} })
+        .then(() => alert("Batch created."));
+    }
+
+    function addSubject() {
+      const batch = document.getElementById("batchForSubject").value;
+      const subject = document.getElementById("subjectName").value;
+      db.collection("batches").doc(batch).update({
+        ["subjects." + subject]: []
+      }).then(() => alert("Subject added."));
+    }
+
+    function addContent() {
+      const batch = document.getElementById("batchForContent").value;
+      const subject = document.getElementById("subjectForContent").value;
+      const title = document.getElementById("contentTitle").value;
+      const url = document.getElementById("contentURL").value;
+      const type = document.getElementById("contentType").value;
+
+      db.collection("batches").doc(batch).get().then(doc => {
+        const data = doc.data();
+        const subjects = data.subjects || {};
+        const subjectContent = subjects[subject] || [];
+        subjectContent.push({ title, url, type });
+        subjects[subject] = subjectContent;
+        db.collection("batches").doc(batch).update({ subjects })
+          .then(() => alert("Content added."));
+      });
+    }
+
+    function assignBatch() {
+      const email = document.getElementById("studentEmail").value;
+      const batch = document.getElementById("assignBatch").value;
+      firebase.auth().fetchSignInMethodsForEmail(email).then(() => {
+        db.collection("users").where("email", "==", email).get().then(snapshot => {
+          if (!snapshot.empty) {
+            const doc = snapshot.docs[0];
+            const userRef = db.collection("users").doc(doc.id);
+            const currentBatches = doc.data().batches || [];
+            if (!currentBatches.includes(batch)) {
+              currentBatches.push(batch);
+              userRef.update({ batches: currentBatches }).then(() => alert("Batch assigned."));
+            } else {
+              alert("Batch already assigned.");
+            }
+          } else {
+            alert("User not found.");
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>

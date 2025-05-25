@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ABP Classes - Login</title>
+</head>
+<body>
+  <h2>Login / Register</h2>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
+  <button onclick="register()">Register</button>
+
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+  <script src="firebase.js"></script>
+  <script>
+    function login() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(user => {
+          window.location.href = (email === "pbvermaclas@gmail.com") ? "admin.html" : "dashboard.html";
+        })
+        .catch(e => alert(e.message));
+    }
+
+    function register() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(user => alert("Registered successfully! Now login."))
+        .catch(e => alert(e.message));
+    }
+  </script>
+</body>
+</html>
