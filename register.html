@@ -114,9 +114,9 @@
     </div>
 
     <script type="module">
-        import { auth, db } from './firebase-init.js';
+        import { auth, db } from './firebase-init.js'; // Corrected import path
         import { createUserWithEmailAndPassword } from 'firebase/auth';
-        import { doc, setDoc } from 'firebase/firestore'; // Import Firestore functions
+        import { doc, setDoc } from 'firebase/firestore'; 
 
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
@@ -128,7 +128,7 @@
             const email = emailInput.value;
             const password = passwordInput.value;
             const confirmPassword = confirmPasswordInput.value;
-            errorMessage.textContent = ''; // Clear previous errors
+            errorMessage.textContent = ''; 
 
             if (password !== confirmPassword) {
                 errorMessage.textContent = 'Passwords do not match.';
@@ -141,27 +141,25 @@
             }
 
             try {
-                // Create user with Firebase Auth
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Determine user role
                 let role = 'student';
                 if (email === 'admin@abp.com') {
                     role = 'admin';
                 }
 
-                // Store user data (UID and role) in Firestore
                 await setDoc(doc(db, 'users', user.uid), {
                     email: user.email,
-                    role: role
+                    role: role,
+                    assignedBatches: [] // Initialize assigned batches for students
                 });
 
                 alert('Registration successful! Redirecting...');
                 if (role === 'admin') {
-                    window.location.href = 'admin-dashboard.html'; // Create this page later
+                    window.location.href = 'admin-dashboard.html'; 
                 } else {
-                    window.location.href = 'student-dashboard.html'; // Create this page later
+                    window.location.href = 'student-dashboard.html'; 
                 }
 
             } catch (error) {
