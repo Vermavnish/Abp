@@ -19,7 +19,6 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    /* (CSS remains unchanged for brevity) */
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
@@ -33,6 +32,7 @@
       padding: 20px 50px;
       background-color: #ffffff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
     }
     .logo {
       height: 60px;
@@ -158,11 +158,10 @@
     .dark-mode .feature-card {
       background-color: #2a2a2a;
     }
-    .dark-mode .login-btn, .dark-mode .join-btn {
+    .dark-mode .login-btn, .dark-mode .register-btn { /* Changed .join-btn to .register-btn */
       box-shadow: none;
     }
     .dark-toggle {
-      /* Position adjusted to be within header for better responsiveness */
       cursor: pointer;
       font-size: 16px;
       background-color: #00796b;
@@ -203,7 +202,6 @@
       background-color: #c2e9e2;
     }
 
-    /* Adjust header for better alignment with buttons */
     header {
       display: flex;
       justify-content: space-between;
@@ -211,7 +209,7 @@
       padding: 20px 50px;
       background-color: #ffffff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+      flex-wrap: wrap; 
     }
 
     .header-controls {
