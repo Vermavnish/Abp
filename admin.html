@@ -1,56 +1,1179 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - ABP Classes</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ABP Classes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, #f0f8ff, #e0f7fa);
+            color: #333;
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #004d40;
+            color: white;
+            padding: 20px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar h2 {
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #e0f7fa;
+            font-size: 24px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+        .sidebar ul li button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 12px 15px;
+            font-size: 16px;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        .sidebar ul li button:hover,
+        .sidebar ul li button.active {
+            background-color: #00796b;
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.6s ease-out;
+        }
+        .section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #00796b;
+            margin-bottom: 30px;
+            font-size: 32px;
+            border-bottom: 2px solid #e0f7fa;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #00695c;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group select,
+        .form-group textarea {
+            width: calc(100% - 22px);
+            padding: 12px 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00796b;
+            box-shadow: 0 0 0 3px rgba(0, 121, 107, 0.2);
+        }
+        .form-group button {
+            background-color: #00796b;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 10px;
+        }
+        .form-group button:hover {
+            background-color: #004d40;
+            transform: translateY(-2px);
+        }
+
+        /* List Styling */
+        .data-list {
+            list-style: none;
+            padding: 0;
+        }
+        .data-list li {
+            background-color: #f5f5f5;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .data-list li span {
+            font-weight: 600;
+            color: #00695c;
+        }
+
+        .alert-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+        .alert-message.success {
+            background-color: #e6ffe6;
+            color: #006400;
+            border: 1px solid #006400;
+        }
+        .alert-message.error {
+            background-color: #ffe6e6;
+            color: #cc0000;
+            border: 1px solid #cc0000;
+        }
+
+        .upload-area {
+            border: 2px dashed #00796b;
+            padding: 20px;
+            margin-top: 15px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #e0f7fa;
+            transition: background-color 0.3s;
+        }
+        .upload-area:hover {
+            background-color: #c2e9e2;
+        }
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        /* Logout Button */
+        #logout-btn {
+            background-color: #d32f2f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: auto; /* Pushes button to the bottom of the sidebar */
+            transition: background-color 0.3s ease;
+        }
+        #logout-btn:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Batch/Subject/Chapter Selectors */
+        .selector-group {
+            margin-bottom: 20px;
+        }
+        .selector-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 <body>
-<header class="header">
-  <img src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png" class="logo" alt="ABP Logo">
-  <nav>
-    <button onclick="window.location.href='index.html'" class="btn">Home</button>
-    <button onclick="window.location.href='login.html'" class="btn">Logout</button>
-  </nav>
-</header>
+    <div class="sidebar">
+        <h2>Admin Panel</h2>
+        <ul>
+            <li><button id="dashboard-btn" class="active">Dashboard</button></li>
+            <li><button id="batches-btn">Manage Batches</button></li>
+            <li><button id="subjects-btn">Manage Subjects</button></li>
+            <li><button id="chapters-btn">Manage Chapters</button></li>
+            <li><button id="content-btn">Upload Content</button></li>
+            <li><button id="assign-students-btn">Assign Batches</button></li>
+            <li><button id="view-students-btn">View Students</button></li>
+        </ul>
+        <button id="logout-btn">Logout</button>
+    </div>
 
-<div class="main-content">
-<div class="container">
-    <h2>Admin Panel</h2>
+    <div class="main-content">
+        <div id="dashboard-section" class="section active">
+            <h1>Admin Dashboard</h1>
+            <p>Welcome, Admin! Use the sidebar to manage your classes.</p>
+            <div class="feature-card">
+                <div class="feature-title">Total Batches</div>
+                <p id="total-batches">0</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Total Students</div>
+                <p id="total-students">0</p>
+            </div>
+        </div>
 
-    <section>
-      <h3>Create Batch</h3>
-      <input type="text" id="batch-name" placeholder="Batch Name" />
-      <button onclick="createBatch()">Create</button>
-    </section>
+        <div id="batches-section" class="section">
+            <h1>Manage Batches</h1>
+            <div class="form-group">
+                <h3>Create New Batch</h3>
+                <label for="new-batch-name">Batch Name:</label>
+                <input type="text" id="new-batch-name" placeholder="e.g., JEE Main 2025 - Batch A" required>
+                <button id="create-batch-btn">Create Batch</button>
+                <p id="create-batch-message" class="alert-message"></p>
+            </div>
+            <h3>Existing Batches</h3>
+            <ul id="batches-list" class="data-list">
+                </ul>
+        </div>
 
-    <section>
-      <h3>Add Content to Batch</h3>
-      <input type="text" id="batch-id-subject" placeholder="Batch ID" />
-      <input type="text" id="subject-name" placeholder="Subject" />
-      <input type="text" id="content-title" placeholder="Title" />
-      <input type="text" id="content-url" placeholder="URL" />
-      <select id="content-type">
-        <option value="video">Video</option>
-        <option value="pdf">PDF</option>
-      </select>
-      <button onclick="addSubjectContent()">Add Content</button>
-    </section>
+        <div id="subjects-section" class="section">
+            <h1>Manage Subjects</h1>
+            <div class="form-group selector-group">
+                <label for="select-batch-for-subject">Select Batch:</label>
+                <select id="select-batch-for-subject">
+                    <option value="">-- Select Batch --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h3>Add Subject to Batch</h3>
+                <label for="new-subject-name">Subject Name:</label>
+                <input type="text" id="new-subject-name" placeholder="e.g., Physics, Mathematics" required>
+                <button id="add-subject-btn">Add Subject</button>
+                <p id="add-subject-message" class="alert-message"></p>
+            </div>
+            <h3>Subjects in Selected Batch</h3>
+            <ul id="subjects-list" class="data-list">
+                </ul>
+        </div>
 
-    <section>
-      <h3>Assign Batch to Student</h3>
-      <input type="email" id="student-email" placeholder="Student Email" />
-      <input type="text" id="assign-batch-id" placeholder="Batch ID" />
-      <button onclick="assignBatch()">Assign</button>
-    </section>
-  </div>
+        <div id="chapters-section" class="section">
+            <h1>Manage Chapters</h1>
+            <div class="form-group selector-group">
+                <label for="select-batch-for-chapter">Select Batch:</label>
+                <select id="select-batch-for-chapter">
+                    <option value="">-- Select Batch --</option>
+                </select>
+            </div>
+            <div class="form-group selector-group">
+                <label for="select-subject-for-chapter">Select Subject:</label>
+                <select id="select-subject-for-chapter">
+                    <option value="">-- Select Subject --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h3>Add Chapter to Subject</h3>
+                <label for="new-chapter-name">Chapter Name:</label>
+                <input type="text" id="new-chapter-name" placeholder="e.g., Kinematics, Algebra" required>
+                <button id="add-chapter-btn">Add Chapter</button>
+                <p id="add-chapter-message" class="alert-message"></p>
+            </div>
+            <h3>Chapters in Selected Subject</h3>
+            <ul id="chapters-list" class="data-list">
+                </ul>
+        </div>
 
-  <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="admin.js"></script>
-</div>
-<div class="footer">
-  <p>Powered by <img alt="ABP" class="logo-inline" src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png"> ABP Classes</p>
-</div>
+        <div id="content-section" class="section">
+            <h1>Upload Content (Videos / PDFs)</h1>
+            <div class="form-group selector-group">
+                <label for="select-batch-for-content">Select Batch:</label>
+                <select id="select-batch-for-content">
+                    <option value="">-- Select Batch --</option>
+                </select>
+            </div>
+            <div class="form-group selector-group">
+                <label for="select-subject-for-content">Select Subject:</label>
+                <select id="select-subject-for-content">
+                    <option value="">-- Select Subject --</option>
+                </select>
+            </div>
+            <div class="form-group selector-group">
+                <label for="select-chapter-for-content">Select Chapter:</label>
+                <select id="select-chapter-for-content">
+                    <option value="">-- Select Chapter --</option>
+                </select>
+            </div>
+
+            <h3>Upload Video</h3>
+            <div class="form-group">
+                <label for="video-title">Video Title:</label>
+                <input type="text" id="video-title" placeholder="e.g., Lecture 1 - Introduction" required>
+            </div>
+            <div class="form-group">
+                <label for="video-type">Video Source:</label>
+                <select id="video-type">
+                    <option value="youtube">YouTube URL</option>
+                    <option value="firebase">Upload File (Firebase Storage)</option>
+                </select>
+            </div>
+            <div class="form-group" id="youtube-url-group">
+                <label for="youtube-url">YouTube URL:</label>
+                <input type="text" id="youtube-url" placeholder="e.g., https://www.youtube.com/watch?v=..." required>
+            </div>
+            <div class="form-group" id="firebase-video-upload-group" style="display: none;">
+                <label for="firebase-video-file">Upload Video File:</label>
+                <div class="upload-area" onclick="document.getElementById('firebase-video-file').click();">
+                    Drag & Drop Video Here or Click to Upload
+                    <input type="file" id="firebase-video-file" accept="video/*">
+                </div>
+                <p id="firebase-video-file-name" style="font-size: 0.9em; margin-top: 5px; color: #666;"></p>
+            </div>
+            <button id="upload-video-btn">Upload Video</button>
+            <p id="upload-video-message" class="alert-message"></p>
+
+            <h3 style="margin-top: 40px;">Upload PDF</h3>
+            <div class="form-group">
+                <label for="pdf-title">PDF Title:</label>
+                <input type="text" id="pdf-title" placeholder="e.g., Chapter 1 Notes" required>
+            </div>
+            <div class="form-group">
+                <label for="pdf-file">Upload PDF File:</label>
+                <div class="upload-area" onclick="document.getElementById('pdf-file').click();">
+                    Drag & Drop PDF Here or Click to Upload
+                    <input type="file" id="pdf-file" accept="application/pdf">
+                </div>
+                <p id="pdf-file-name" style="font-size: 0.9em; margin-top: 5px; color: #666;"></p>
+            </div>
+            <button id="upload-pdf-btn">Upload PDF</button>
+            <p id="upload-pdf-message" class="alert-message"></p>
+        </div>
+
+        <div id="assign-students-section" class="section">
+            <h1>Assign Batches to Students</h1>
+            <div class="form-group selector-group">
+                <label for="select-batch-to-assign">Select Batch:</label>
+                <select id="select-batch-to-assign">
+                    <option value="">-- Select Batch --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h3>Students List (Click to Assign/Unassign)</h3>
+                <ul id="assign-students-list" class="data-list">
+                    </ul>
+                <p id="assign-students-message" class="alert-message"></p>
+            </div>
+        </div>
+
+        <div id="view-students-section" class="section">
+            <h1>View All Students & Their Batches</h1>
+            <ul id="all-students-list" class="data-list">
+                </ul>
+            <p id="view-students-message" class="alert-message"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db, app } from './firebase-init.js';
+        import { signOut, onAuthStateChanged } from 'firebase/auth';
+        import { collection, addDoc, getDocs, doc, getDoc, updateDoc, arrayUnion, arrayRemove, query, where } from 'firebase/firestore';
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+
+        // --- Firebase Services Initialization ---
+        const storage = getStorage(app);
+
+        // --- DOM Elements ---
+        const sidebarButtons = document.querySelectorAll('.sidebar ul li button');
+        const sections = document.querySelectorAll('.section');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // Batch Management
+        const newBatchNameInput = document.getElementById('new-batch-name');
+        const createBatchBtn = document.getElementById('create-batch-btn');
+        const createBatchMessage = document.getElementById('create-batch-message');
+        const batchesList = document.getElementById('batches-list');
+
+        // Subject Management
+        const selectBatchForSubject = document.getElementById('select-batch-for-subject');
+        const newSubjectNameInput = document.getElementById('new-subject-name');
+        const addSubjectBtn = document.getElementById('add-subject-btn');
+        const addSubjectMessage = document.getElementById('add-subject-message');
+        const subjectsList = document.getElementById('subjects-list');
+
+        // Chapter Management
+        const selectBatchForChapter = document.getElementById('select-batch-for-chapter');
+        const selectSubjectForChapter = document.getElementById('select-subject-for-chapter');
+        const newChapterNameInput = document.getElementById('new-chapter-name');
+        const addChapterBtn = document.getElementById('add-chapter-btn');
+        const addChapterMessage = document.getElementById('add-chapter-message');
+        const chaptersList = document.getElementById('chapters-list');
+
+        // Content Upload
+        const selectBatchForContent = document.getElementById('select-batch-for-content');
+        const selectSubjectForContent = document.getElementById('select-subject-for-content');
+        const selectChapterForContent = document.getElementById('select-chapter-for-content');
+
+        const videoTitleInput = document.getElementById('video-title');
+        const videoTypeSelect = document.getElementById('video-type');
+        const youtubeUrlGroup = document.getElementById('youtube-url-group');
+        const youtubeUrlInput = document.getElementById('youtube-url');
+        const firebaseVideoUploadGroup = document.getElementById('firebase-video-upload-group');
+        const firebaseVideoFileInput = document.getElementById('firebase-video-file');
+        const firebaseVideoFileName = document.getElementById('firebase-video-file-name');
+        const uploadVideoBtn = document.getElementById('upload-video-btn');
+        const uploadVideoMessage = document.getElementById('upload-video-message');
+
+        const pdfTitleInput = document.getElementById('pdf-title');
+        const pdfFileInput = document.getElementById('pdf-file');
+        const pdfFileName = document.getElementById('pdf-file-name');
+        const uploadPdfBtn = document.getElementById('upload-pdf-btn');
+        const uploadPdfMessage = document.getElementById('upload-pdf-message');
+
+        // Assign Students
+        const selectBatchToAssign = document.getElementById('select-batch-to-assign');
+        const assignStudentsList = document.getElementById('assign-students-list');
+        const assignStudentsMessage = document.getElementById('assign-students-message');
+
+        // View Students
+        const allStudentsList = document.getElementById('all-students-list');
+        const viewStudentsMessage = document.getElementById('view-students-message');
+
+        // --- Authentication Check (Crucial for page security) ---
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in, now check their role
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    const userData = userDocSnap.data();
+                    if (userData.role === 'admin') {
+                        // Admin is logged in, load initial data
+                        console.log('Admin logged in:', user.email);
+                        loadBatches(); // Load batches for dashboard and selectors
+                        loadStudents(); // Load students for dashboard and assignment
+                    } else {
+                        // User is logged in but not an admin, redirect
+                        alert('Access Denied. You are not an admin.');
+                        window.location.href = 'student-dashboard.html'; // Or index.html
+                    }
+                } else {
+                    // User data not found in Firestore (shouldn't happen after register)
+                    alert('User profile not found. Please re-login.');
+                    signOut(auth);
+                    window.location.href = 'login.html';
+                }
+            } else {
+                // No user is signed in, redirect to login page
+                console.log('No user logged in, redirecting to login.');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // --- Sidebar Navigation Logic ---
+        sidebarButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and hide all sections
+                sidebarButtons.forEach(btn => btn.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+
+                // Add active class to clicked button and show corresponding section
+                button.classList.add('active');
+                const targetSectionId = button.id.replace('-btn', '-section');
+                document.getElementById(targetSectionId).classList.add('active');
+
+                // Trigger specific data loads when a section is activated
+                if (targetSectionId === 'batches-section') {
+                    loadBatches();
+                } else if (targetSectionId === 'subjects-section') {
+                    loadBatchesIntoSelector(selectBatchForSubject);
+                    subjectsList.innerHTML = ''; // Clear previous subjects
+                } else if (targetSectionId === 'chapters-section') {
+                    loadBatchesIntoSelector(selectBatchForChapter);
+                    selectSubjectForChapter.innerHTML = '<option value="">-- Select Subject --</option>'; // Reset subjects
+                    chaptersList.innerHTML = ''; // Clear previous chapters
+                } else if (targetSectionId === 'content-section') {
+                    loadBatchesIntoSelector(selectBatchForContent);
+                    selectSubjectForContent.innerHTML = '<option value="">-- Select Subject --</option>';
+                    selectChapterForContent.innerHTML = '<option value="">-- Select Chapter --</option>';
+                } else if (targetSectionId === 'assign-students-section') {
+                    loadBatchesIntoSelector(selectBatchToAssign);
+                    assignStudentsList.innerHTML = ''; // Clear student list
+                } else if (targetSectionId === 'view-students-section') {
+                    loadAllStudentsAndBatches();
+                }
+            });
+        });
+
+        // --- Logout Functionality ---
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                alert('Logged out successfully!');
+                window.location.href = 'index.html'; // Redirect to home page or login page
+            } catch (error) {
+                console.error('Logout error:', error.message);
+                alert('Failed to log out. Please try again.');
+            }
+        });
+
+        // --- Helper for messages ---
+        function displayMessage(element, message, type) {
+            element.textContent = message;
+            element.className = `alert-message ${type}`;
+            setTimeout(() => {
+                element.textContent = '';
+                element.className = 'alert-message';
+            }, 3000);
+        }
+
+        // --- Helper for loading batches into select elements ---
+        async function loadBatchesIntoSelector(selectorElement) {
+            selectorElement.innerHTML = '<option value="">-- Select Batch --</option>'; // Reset options
+            const batchesCol = collection(db, 'batches');
+            const batchSnapshot = await getDocs(batchesCol);
+            batchSnapshot.forEach(doc => {
+                const batch = doc.data();
+                const option = document.createElement('option');
+                option.value = doc.id; // Use doc.id for batchId
+                option.textContent = batch.name;
+                selectorElement.appendChild(option);
+            });
+        }
+
+        // --- Helper for loading subjects into select elements ---
+        async function loadSubjectsIntoSelector(batchId, selectorElement) {
+            selectorElement.innerHTML = '<option value="">-- Select Subject --</option>'; // Reset options
+            if (!batchId) return;
+
+            const batchDocRef = doc(db, 'batches', batchId);
+            const batchDocSnap = await getDoc(batchDocRef);
+            if (batchDocSnap.exists() && batchDocSnap.data().subjects) {
+                batchDocSnap.data().subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id; // Use subject.id
+                    option.textContent = subject.name;
+                    selectorElement.appendChild(option);
+                });
+            }
+        }
+
+        // --- Helper for loading chapters into select elements ---
+        async function loadChaptersIntoSelector(batchId, subjectId, selectorElement) {
+            selectorElement.innerHTML = '<option value="">-- Select Chapter --</option>'; // Reset options
+            if (!batchId || !subjectId) return;
+
+            const batchDocRef = doc(db, 'batches', batchId);
+            const batchDocSnap = await getDoc(batchDocRef);
+            if (batchDocSnap.exists() && batchDocSnap.data().subjects) {
+                const subject = batchDocSnap.data().subjects.find(s => s.id === subjectId);
+                if (subject && subject.chapters) {
+                    subject.chapters.forEach(chapter => {
+                        const option = document.createElement('option');
+                        option.value = chapter.id; // Use chapter.id
+                        option.textContent = chapter.name;
+                        selectorElement.appendChild(option);
+                    });
+                }
+            }
+        }
+
+        // --- Dashboard Stats ---
+        async function loadDashboardStats() {
+            const batchesCol = collection(db, 'batches');
+            const studentsCol = collection(db, 'users');
+            const studentQuery = query(studentsCol, where("role", "==", "student"));
+
+            const batchSnap = await getDocs(batchesCol);
+            document.getElementById('total-batches').textContent = batchSnap.size;
+
+            const studentSnap = await getDocs(studentQuery);
+            document.getElementById('total-students').textContent = studentSnap.size;
+        }
+
+        // --- Manage Batches ---
+        createBatchBtn.addEventListener('click', async () => {
+            const batchName = newBatchNameInput.value.trim();
+            if (!batchName) {
+                displayMessage(createBatchMessage, 'Batch name cannot be empty.', 'error');
+                return;
+            }
+
+            try {
+                // Add a new document with a generated ID to the "batches" collection
+                await addDoc(collection(db, 'batches'), {
+                    name: batchName,
+                    createdAt: new Date(),
+                    subjects: [] // Initialize with empty subjects array
+                });
+                displayMessage(createBatchMessage, 'Batch created successfully!', 'success');
+                newBatchNameInput.value = '';
+                loadBatches(); // Reload the list of batches
+            } catch (error) {
+                console.error('Error creating batch:', error);
+                displayMessage(createBatchMessage, 'Failed to create batch.', 'error');
+            }
+        });
+
+        async function loadBatches() {
+            batchesList.innerHTML = ''; // Clear current list
+            const batchesCol = collection(db, 'batches');
+            const batchSnapshot = await getDocs(batchesCol);
+            if (batchSnapshot.empty) {
+                batchesList.innerHTML = '<li>No batches created yet.</li>';
+                return;
+            }
+            batchSnapshot.forEach(doc => {
+                const batch = doc.data();
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${batch.name}</span> (ID: ${doc.id})`;
+                batchesList.appendChild(li);
+            });
+            loadDashboardStats(); // Update dashboard stats
+        }
+
+        // --- Manage Subjects ---
+        selectBatchForSubject.addEventListener('change', async () => {
+            const batchId = selectBatchForSubject.value;
+            subjectsList.innerHTML = ''; // Clear subjects when batch changes
+            if (!batchId) return;
+
+            const batchDocRef = doc(db, 'batches', batchId);
+            const batchDocSnap = await getDoc(batchDocRef);
+            if (batchDocSnap.exists() && batchDocSnap.data().subjects) {
+                const subjects = batchDocSnap.data().subjects;
+                if (subjects.length === 0) {
+                    subjectsList.innerHTML = '<li>No subjects in this batch yet.</li>';
+                    return;
+                }
+                subjects.forEach(subject => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<span>${subject.name}</span> (ID: ${subject.id})`;
+                    subjectsList.appendChild(li);
+                });
+            } else {
+                subjectsList.innerHTML = '<li>No subjects in this batch yet.</li>';
+            }
+        });
+
+        addSubjectBtn.addEventListener('click', async () => {
+            const batchId = selectBatchForSubject.value;
+            const subjectName = newSubjectNameInput.value.trim();
+
+            if (!batchId) {
+                displayMessage(addSubjectMessage, 'Please select a batch first.', 'error');
+                return;
+            }
+            if (!subjectName) {
+                displayMessage(addSubjectMessage, 'Subject name cannot be empty.', 'error');
+                return;
+            }
+
+            try {
+                const batchDocRef = doc(db, 'batches', batchId);
+                const newSubject = {
+                    id: Math.random().toString(36).substring(2, 11), // Simple unique ID for subject
+                    name: subjectName,
+                    chapters: [] // Initialize with empty chapters array
+                };
+
+                await updateDoc(batchDocRef, {
+                    subjects: arrayUnion(newSubject)
+                });
+                displayMessage(addSubjectMessage, 'Subject added successfully!', 'success');
+                newSubjectNameInput.value = '';
+                // Reload subjects for the current batch
+                selectBatchForSubject.dispatchEvent(new Event('change'));
+            } catch (error) {
+                console.error('Error adding subject:', error);
+                displayMessage(addSubjectMessage, 'Failed to add subject.', 'error');
+            }
+        });
+
+        // --- Manage Chapters ---
+        selectBatchForChapter.addEventListener('change', () => {
+            const batchId = selectBatchForChapter.value;
+            chaptersList.innerHTML = '';
+            loadSubjectsIntoSelector(batchId, selectSubjectForChapter);
+        });
+
+        selectSubjectForChapter.addEventListener('change', async () => {
+            const batchId = selectBatchForChapter.value;
+            const subjectId = selectSubjectForChapter.value;
+            chaptersList.innerHTML = '';
+
+            if (!batchId || !subjectId) return;
+
+            const batchDocRef = doc(db, 'batches', batchId);
+            const batchDocSnap = await getDoc(batchDocRef);
+
+            if (batchDocSnap.exists()) {
+                const subjects = batchDocSnap.data().subjects;
+                const selectedSubject = subjects.find(s => s.id === subjectId);
+                if (selectedSubject && selectedSubject.chapters) {
+                    const chapters = selectedSubject.chapters;
+                    if (chapters.length === 0) {
+                        chaptersList.innerHTML = '<li>No chapters in this subject yet.</li>';
+                        return;
+                    }
+                    chapters.forEach(chapter => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<span>${chapter.name}</span> (ID: ${chapter.id})`;
+                        chaptersList.appendChild(li);
+                    });
+                } else {
+                    chaptersList.innerHTML = '<li>No chapters in this subject yet.</li>';
+                }
+            }
+        });
+
+        addChapterBtn.addEventListener('click', async () => {
+            const batchId = selectBatchForChapter.value;
+            const subjectId = selectSubjectForChapter.value;
+            const chapterName = newChapterNameInput.value.trim();
+
+            if (!batchId || !subjectId) {
+                displayMessage(addChapterMessage, 'Please select a batch and subject.', 'error');
+                return;
+            }
+            if (!chapterName) {
+                displayMessage(addChapterMessage, 'Chapter name cannot be empty.', 'error');
+                return;
+            }
+
+            try {
+                const batchDocRef = doc(db, 'batches', batchId);
+                const batchDocSnap = await getDoc(batchDocRef);
+
+                if (batchDocSnap.exists()) {
+                    const batchData = batchDocSnap.data();
+                    const subjects = batchData.subjects;
+                    const subjectIndex = subjects.findIndex(s => s.id === subjectId);
+
+                    if (subjectIndex > -1) {
+                        const newChapter = {
+                            id: Math.random().toString(36).substring(2, 11), // Simple unique ID for chapter
+                            name: chapterName,
+                            content: [] // Initialize with empty content array
+                        };
+
+                        // Add chapter to the specific subject's chapters array
+                        subjects[subjectIndex].chapters.push(newChapter);
+
+                        await updateDoc(batchDocRef, {
+                            subjects: subjects
+                        });
+                        displayMessage(addChapterMessage, 'Chapter added successfully!', 'success');
+                        newChapterNameInput.value = '';
+                        // Reload chapters for the current subject
+                        selectSubjectForChapter.dispatchEvent(new Event('change'));
+                    } else {
+                        displayMessage(addChapterMessage, 'Selected subject not found.', 'error');
+                    }
+                } else {
+                    displayMessage(addChapterMessage, 'Selected batch not found.', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding chapter:', error);
+                displayMessage(addChapterMessage, 'Failed to add chapter.', 'error');
+            }
+        });
+
+        // --- Upload Content ---
+        selectBatchForContent.addEventListener('change', () => {
+            const batchId = selectBatchForContent.value;
+            selectSubjectForContent.innerHTML = '<option value="">-- Select Subject --</option>';
+            selectChapterForContent.innerHTML = '<option value="">-- Select Chapter --</option>';
+            loadSubjectsIntoSelector(batchId, selectSubjectForContent);
+        });
+
+        selectSubjectForContent.addEventListener('change', () => {
+            const batchId = selectBatchForContent.value;
+            const subjectId = selectSubjectForContent.value;
+            selectChapterForContent.innerHTML = '<option value="">-- Select Chapter --</option>';
+            loadChaptersIntoSelector(batchId, subjectId, selectChapterForContent);
+        });
+
+        videoTypeSelect.addEventListener('change', () => {
+            if (videoTypeSelect.value === 'youtube') {
+                youtubeUrlGroup.style.display = 'block';
+                firebaseVideoUploadGroup.style.display = 'none';
+                firebaseVideoFileInput.value = ''; // Clear file input
+                firebaseVideoFileName.textContent = '';
+            } else {
+                youtubeUrlGroup.style.display = 'none';
+                firebaseVideoUploadGroup.style.display = 'block';
+                youtubeUrlInput.value = ''; // Clear URL input
+            }
+        });
+
+        firebaseVideoFileInput.addEventListener('change', () => {
+            if (firebaseVideoFileInput.files.length > 0) {
+                firebaseVideoFileName.textContent = `Selected: ${firebaseVideoFileInput.files[0].name}`;
+            } else {
+                firebaseVideoFileName.textContent = '';
+            }
+        });
+
+        pdfFileInput.addEventListener('change', () => {
+            if (pdfFileInput.files.length > 0) {
+                pdfFileName.textContent = `Selected: ${pdfFileInput.files[0].name}`;
+            } else {
+                pdfFileName.textContent = '';
+            }
+        });
+
+        uploadVideoBtn.addEventListener('click', async () => {
+            const batchId = selectBatchForContent.value;
+            const subjectId = selectSubjectForContent.value;
+            const chapterId = selectChapterForContent.value;
+            const videoTitle = videoTitleInput.value.trim();
+            const videoType = videoTypeSelect.value;
+
+            if (!batchId || !subjectId || !chapterId) {
+                displayMessage(uploadVideoMessage, 'Please select Batch, Subject, and Chapter.', 'error');
+                return;
+            }
+            if (!videoTitle) {
+                displayMessage(uploadVideoMessage, 'Video title cannot be empty.', 'error');
+                return;
+            }
+
+            let videoUrl = '';
+            let filePath = ''; // For Firebase Storage files
+
+            if (videoType === 'youtube') {
+                videoUrl = youtubeUrlInput.value.trim();
+                if (!videoUrl || !videoUrl.includes('youtube.com/watch?v=')) {
+                    displayMessage(uploadVideoMessage, 'Please enter a valid YouTube URL.', 'error');
+                    return;
+                }
+            } else { // Firebase Storage upload
+                const videoFile = firebaseVideoFileInput.files[0];
+                if (!videoFile) {
+                    displayMessage(uploadVideoMessage, 'Please select a video file to upload.', 'error');
+                    return;
+                }
+
+                uploadVideoMessage.textContent = 'Uploading video...';
+                uploadVideoMessage.className = 'alert-message'; // Neutral state for progress
+
+                const storageRef = ref(storage, `content/videos/${batchId}/${subjectId}/${chapterId}/${videoFile.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, videoFile);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        uploadVideoMessage.textContent = `Upload is ${progress.toFixed(0)}% done`;
+                        if (progress === 100) uploadVideoMessage.className = 'alert-message success';
+                    },
+                    (error) => {
+                        console.error('Video upload failed:', error);
+                        displayMessage(uploadVideoMessage, 'Video upload failed!', 'error');
+                        return; // Stop execution if upload fails
+                    },
+                    async () => {
+                        // Upload successful, get download URL
+                        videoUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                        filePath = `content/videos/${batchId}/${subjectId}/${chapterId}/${videoFile.name}`;
+                        addContentToChapter(batchId, subjectId, chapterId, videoTitle, 'video', videoUrl, filePath, uploadVideoMessage);
+                    }
+                );
+                return; // Exit here, content addition continues in uploadTask.on's complete callback
+            }
+            // If YouTube, add content directly
+            addContentToChapter(batchId, subjectId, chapterId, videoTitle, 'video', videoUrl, filePath, uploadVideoMessage);
+        });
+
+        uploadPdfBtn.addEventListener('click', async () => {
+            const batchId = selectBatchForContent.value;
+            const subjectId = selectSubjectForContent.value;
+            const chapterId = selectChapterForContent.value;
+            const pdfTitle = pdfTitleInput.value.trim();
+            const pdfFile = pdfFileInput.files[0];
+
+            if (!batchId || !subjectId || !chapterId) {
+                displayMessage(uploadPdfMessage, 'Please select Batch, Subject, and Chapter.', 'error');
+                return;
+            }
+            if (!pdfTitle) {
+                displayMessage(uploadPdfMessage, 'PDF title cannot be empty.', 'error');
+                return;
+            }
+            if (!pdfFile) {
+                displayMessage(uploadPdfMessage, 'Please select a PDF file to upload.', 'error');
+                return;
+            }
+
+            uploadPdfMessage.textContent = 'Uploading PDF...';
+            uploadPdfMessage.className = 'alert-message';
+
+            try {
+                const storageRef = ref(storage, `content/pdfs/${batchId}/${subjectId}/${chapterId}/${pdfFile.name}`);
+                const uploadTask = uploadBytesResumable(storageRef, pdfFile);
+
+                uploadTask.on('state_changed',
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        uploadPdfMessage.textContent = `Upload is ${progress.toFixed(0)}% done`;
+                        if (progress === 100) uploadPdfMessage.className = 'alert-message success';
+                    },
+                    (error) => {
+                        console.error('PDF upload failed:', error);
+                        displayMessage(uploadPdfMessage, 'PDF upload failed!', 'error');
+                        return;
+                    },
+                    async () => {
+                        const pdfUrl = await getDownloadURL(uploadTask.snapshot.ref);
+                        const filePath = `content/pdfs/${batchId}/${subjectId}/${chapterId}/${pdfFile.name}`;
+                        await addContentToChapter(batchId, subjectId, chapterId, pdfTitle, 'pdf', pdfUrl, filePath, uploadPdfMessage);
+                        pdfFileInput.value = ''; // Clear file input
+                        pdfFileName.textContent = '';
+                    }
+                );
+            } catch (error) {
+                console.error('Error initiating PDF upload:', error);
+                displayMessage(uploadPdfMessage, 'Failed to initiate PDF upload.', 'error');
+            }
+        });
+
+        async function addContentToChapter(batchId, subjectId, chapterId, title, type, url, filePath, messageElement) {
+            try {
+                const batchDocRef = doc(db, 'batches', batchId);
+                const batchDocSnap = await getDoc(batchDocRef);
+
+                if (batchDocSnap.exists()) {
+                    const batchData = batchDocSnap.data();
+                    const subjects = batchData.subjects;
+                    const subjectIndex = subjects.findIndex(s => s.id === subjectId);
+
+                    if (subjectIndex > -1) {
+                        const chapters = subjects[subjectIndex].chapters;
+                        const chapterIndex = chapters.findIndex(c => c.id === chapterId);
+
+                        if (chapterIndex > -1) {
+                            const newContent = {
+                                id: Math.random().toString(36).substring(2, 11), // Simple unique ID
+                                title: title,
+                                type: type, // 'video' or 'pdf'
+                                url: url,
+                                filePath: filePath || null, // Firebase Storage path
+                                uploadedAt: new Date()
+                            };
+
+                            chapters[chapterIndex].content.push(newContent);
+
+                            await updateDoc(batchDocRef, {
+                                subjects: subjects
+                            });
+                            displayMessage(messageElement, `${type === 'video' ? 'Video' : 'PDF'} uploaded and added successfully!`, 'success');
+                            // Clear inputs
+                            videoTitleInput.value = '';
+                            youtubeUrlInput.value = '';
+                            firebaseVideoFileInput.value = '';
+                            firebaseVideoFileName.textContent = '';
+                            pdfTitleInput.value = '';
+                            pdfFileInput.value = '';
+                            pdfFileName.textContent = '';
+
+                        } else {
+                            displayMessage(messageElement, 'Selected chapter not found.', 'error');
+                        }
+                    } else {
+                        displayMessage(messageElement, 'Selected subject not found.', 'error');
+                    }
+                } else {
+                    displayMessage(messageElement, 'Selected batch not found.', 'error');
+                }
+            } catch (error) {
+                console.error('Error adding content to chapter:', error);
+                displayMessage(messageElement, `Failed to add ${type} to chapter.`, 'error');
+            }
+        }
+
+
+        // --- Assign Batches to Students ---
+        // This is a simplified version. For a real app, you'd likely want a search feature
+        // and a more robust way to display and select students.
+        let allStudents = []; // Store all student data
+
+        async function loadStudents() {
+            allStudents = []; // Clear previous data
+            assignStudentsList.innerHTML = '';
+            const usersCol = collection(db, 'users');
+            const studentQuery = query(usersCol, where("role", "==", "student"));
+            const studentSnap = await getDocs(studentQuery);
+
+            if (studentSnap.empty) {
+                assignStudentsList.innerHTML = '<li>No students registered yet.</li>';
+                return;
+            }
+
+            studentSnap.forEach(doc => {
+                const student = { id: doc.id, ...doc.data() };
+                allStudents.push(student);
+            });
+            // Re-render student list if already on the assign students section
+            if (document.getElementById('assign-students-section').classList.contains('active')) {
+                const selectedBatchId = selectBatchToAssign.value;
+                if (selectedBatchId) {
+                    renderStudentsForAssignment(selectedBatchId);
+                } else {
+                     assignStudentsList.innerHTML = '<li>Select a batch to view/assign students.</li>';
+                }
+            }
+            loadDashboardStats(); // Update dashboard stats
+        }
+
+        selectBatchToAssign.addEventListener('change', async () => {
+            const batchId = selectBatchToAssign.value;
+            assignStudentsList.innerHTML = '';
+            if (!batchId) {
+                assignStudentsList.innerHTML = '<li>Select a batch to view/assign students.</li>';
+                return;
+            }
+            renderStudentsForAssignment(batchId);
+        });
+
+        async function renderStudentsForAssignment(batchId) {
+            assignStudentsList.innerHTML = '<li>Loading students...</li>';
+            const batchDocRef = doc(db, 'batches', batchId);
+            const batchDocSnap = await getDoc(batchDocRef);
+            let assignedStudentIds = [];
+
+            if (batchDocSnap.exists() && batchDocSnap.data().assignedStudents) {
+                assignedStudentIds = batchDocSnap.data().assignedStudents;
+            }
+
+            assignStudentsList.innerHTML = ''; // Clear loading message
+
+            if (allStudents.length === 0) {
+                assignStudentsList.innerHTML = '<li>No students found to assign.</li>';
+                return;
+            }
+
+            allStudents.forEach(student => {
+                const li = document.createElement('li');
+                const isAssigned = assignedStudentIds.includes(student.id);
+                li.innerHTML = `
+                    <span>${student.email}</span>
+                    <button data-student-id="${student.id}" class="${isAssigned ? 'unassign-btn' : 'assign-btn'}">
+                        ${isAssigned ? 'Unassign' : 'Assign'}
+                    </button>
+                `;
+                assignStudentsList.appendChild(li);
+            });
+
+            // Add event listeners to the new buttons
+            assignStudentsList.querySelectorAll('.assign-btn, .unassign-btn').forEach(button => {
+                button.addEventListener('click', async (e) => {
+                    const studentId = e.target.dataset.studentId;
+                    const batchId = selectBatchToAssign.value;
+                    if (!batchId) {
+                        displayMessage(assignStudentsMessage, 'Please select a batch first.', 'error');
+                        return;
+                    }
+
+                    try {
+                        if (e.target.classList.contains('assign-btn')) {
+                            // Assign student to batch
+                            await updateDoc(doc(db, 'batches', batchId), {
+                                assignedStudents: arrayUnion(studentId)
+                            });
+                            // Also update student's document to include the batch
+                            await updateDoc(doc(db, 'users', studentId), {
+                                assignedBatches: arrayUnion(batchId)
+                            });
+                            displayMessage(assignStudentsMessage, 'Student assigned successfully!', 'success');
+                        } else {
+                            // Unassign student from batch
+                            await updateDoc(doc(db, 'batches', batchId), {
+                                assignedStudents: arrayRemove(studentId)
+                            });
+                            // Also update student's document to remove the batch
+                            await updateDoc(doc(db, 'users', studentId), {
+                                assignedBatches: arrayRemove(batchId)
+                            });
+                            displayMessage(assignStudentsMessage, 'Student unassigned successfully!', 'success');
+                        }
+                        renderStudentsForAssignment(batchId); // Re-render the list
+                        loadAllStudentsAndBatches(); // Update the "View All Students" section if open
+                    } catch (error) {
+                        console.error('Error assigning/unassigning student:', error);
+                        displayMessage(assignStudentsMessage, 'Failed to update assignment.', 'error');
+                    }
+                });
+            });
+        }
+
+
+        // --- View All Students & Their Batches ---
+        async function loadAllStudentsAndBatches() {
+            allStudentsList.innerHTML = '<li>Loading all students...</li>';
+            const usersCol = collection(db, 'users');
+            const studentQuery = query(usersCol, where("role", "==", "student"));
+            const studentSnap = await getDocs(studentQuery);
+
+            if (studentSnap.empty) {
+                allStudentsList.innerHTML = '<li>No students registered yet.</li>';
+                return;
+            }
+
+            allStudentsList.innerHTML = ''; // Clear loading message
+
+            const batchNamesMap = new Map(); // To store batch IDs to names
+
+            // First, fetch all batch names for efficient lookup
+            const batchesCol = collection(db, 'batches');
+            const batchSnapshot = await getDocs(batchesCol);
+            batchSnapshot.forEach(doc => {
+                batchNamesMap.set(doc.id, doc.data().name);
+            });
+
+
+            studentSnap.forEach(doc => {
+                const student = doc.data();
+                const li = document.createElement('li');
+                let assignedBatchesText = 'No batches assigned.';
+
+                if (student.assignedBatches && student.assignedBatches.length > 0) {
+                    const batchNames = student.assignedBatches.map(batchId => batchNamesMap.get(batchId) || `Unknown Batch (${batchId})`);
+                    assignedBatchesText = `Batches: ${batchNames.join(', ')}`;
+                }
+
+                li.innerHTML = `<span>${student.email}</span><br>${assignedBatchesText}`;
+                allStudentsList.appendChild(li);
+            });
+        }
+
+        // Initial load for dashboard stats when admin-dashboard.html loads
+        // (This will also be called by onAuthStateChanged once auth is confirmed)
+        // loadDashboardStats();
+    </script>
 </body>
 </html>
