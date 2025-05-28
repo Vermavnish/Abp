@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - ABP CLASSES</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">ABP CLASSES</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li id="dashboardLink"><a href="dashboard.html">My Dashboard</a></li>
+                    <li id="adminLink" style="display: none;"><a href="admin.html">Admin Panel</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <span id="currentUser">Guest</span> |
+                <span id="authLinks" style="display: none;">
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Signup</a>
+                </span>
+                <span id="userLinks">
+                    <a href="#" id="logoutButton">Logout</a>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Welcome to Your Dashboard! <span id="studentName"></span></h1>
+
+        <section class="card">
+            <h2>My Assigned Batches</h2>
+            <div id="batchesList">
+                <p>Loading batches...</p>
+                <ul class="list-group" id="assignedBatchesContainer">
+                    </ul>
+                <p id="noBatchesMessage" style="display: none;">You haven't been assigned to any batches yet.</p>
+            </div>
+        </section>
+
+        <section id="contentViewer" class="card" style="display: none;">
+            <h2 id="contentTitle"></h2>
+            <div id="videoContainer" class="video-viewer" style="display: none;"></div>
+            <div id="pdfContainer" class="pdf-viewer" style="display: none;"></div>
+            <button class="btn btn-secondary" id="backToChaptersBtn" style="margin-top: 20px;">Back to Chapters</button>
+        </section>
+
+        <section id="subjectsChaptersSection" class="card" style="display: none;">
+            <h2 id="currentBatchName"></h2>
+            <button class="btn btn-secondary" id="backToBatchesBtn" style="margin-bottom: 20px;">Back to My Batches</button>
+            <div id="subjectsList">
+                <h3>Subjects</h3>
+                <p>Loading subjects...</p>
+                <ul class="list-group" id="subjectsContainer">
+                    </ul>
+            </div>
+            <div id="chaptersList" style="display: none;">
+                <h3>Chapters for <span id="currentSubjectName"></span></h3>
+                <button class="btn btn-secondary" id="backToSubjectsBtn" style="margin-bottom: 20px;">Back to Subjects</button>
+                <p>Loading chapters...</p>
+                <ul class="list-group" id="chaptersContainer">
+                    </ul>
+            </div>
+        </section>
+
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ABP CLASSES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="dashboard.js"></script> </body>
+</html>
