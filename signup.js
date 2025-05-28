@@ -28,13 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     assignedBatches: [] // Initialize with empty array
                 });
 
-                signupMessageDiv.textContent = 'Signup successful! Redirecting to login...';
+                signupMessageDiv.textContent = 'Signup successful! Redirecting...';
                 signupMessageDiv.className = 'alert alert-success';
                 signupMessageDiv.style.display = 'block';
-                // Optional: Redirect to login or dashboard
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000); // Redirect after 2 seconds
+                // The onAuthStateChanged listener in app.js will now handle redirection
+                // No need for setTimeout or direct redirection here.
 
             } catch (error) {
                 console.error('Signup error:', error);
