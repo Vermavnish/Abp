@@ -3,34 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABP CLASSES - Learn Smarter</title>
+    <title>ABP CLASSES - Home</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">ABP CLASSES</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="courses.html">Courses</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-                <li><a href="login.html" class="btn">Login</a></li>
-                <li><a href="signup.html" class="btn btn-secondary">Sign Up</a></li>
-            </ul>
-        </nav>
+        <div class="container">
+            <a href="index.html" class="logo">ABP CLASSES</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Courses</a></li> <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li id="dashboardLink" style="display: none;"><a href="dashboard.html">My Dashboard</a></li>
+                    <li id="adminLink" style="display: none;"><a href="admin.html">Admin Panel</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <span id="currentUser">Guest</span> |
+                <span id="authLinks">
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Signup</a>
+                </span>
+                <span id="userLinks" style="display: none;">
+                    <a href="#" id="logoutButton">Logout</a>
+                </span>
+            </div>
+        </div>
     </header>
 
-    <main class="hero">
-        <div class="hero-content">
-            <h1>Your Journey to Excellence Starts Here</h1>
-            <p>Access high-quality video lectures, study materials, and expert guidance.</p>
-            <a href="signup.html" class="btn btn-primary">Get Started Today</a>
-        </div>
+    <main class="container">
+        <h1>Welcome to ABP CLASSES!</h1>
+        <p>Your one-stop destination for quality online education.</p>
+
+        <section class="card">
+            <h2>Why Choose Us?</h2>
+            <ul>
+                <li>Expert Faculty</li>
+                <li>Comprehensive Study Material (Videos & PDFs)</li>
+                <li>Flexible Learning Schedule</li>
+                <li>Personalized Batches</li>
+            </ul>
+        </section>
+
+        <section class="card">
+            <h2>Our Courses</h2>
+            <p>Explore our wide range of courses tailored for different academic needs.</p>
+            <p><a href="#" class="btn btn-primary">View All Courses</a></p> </section>
+
+        <section class="card">
+            <h2>Get Started Today</h2>
+            <p>Join ABP CLASSES and unlock your full potential!</p>
+            <p><a href="signup.html" class="btn btn-success">Sign Up Now</a></p>
+        </section>
+
     </main>
 
     <footer>
-        <p>&copy; 2024 ABP CLASSES. All rights reserved.</p>
+        <div class="container">
+            <p>&copy; 2024 ABP CLASSES. All rights reserved.</p>
+        </div>
     </footer>
 
     <script type="module" src="app.js"></script>
