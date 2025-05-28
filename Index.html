@@ -1,301 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="ABP Classes - Your trusted educational platform with expert teachers, video lectures, and more."/>
-  <title>ABP Classes - Home</title>
-  <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-      localStorage.setItem("abpDarkMode", document.body.classList.contains("dark-mode"));
-    }
-
-    window.onload = function() {
-      if (localStorage.getItem("abpDarkMode") === "true") {
-        document.body.classList.add("dark-mode");
-      }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #f0f8ff, #e0f7fa);
-      color: #333;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    }
-    .logo {
-      height: 60px;
-    }
-    
-    .main-content {
-      padding: 40px 50px;
-    }
-    .logo-inline {
-      height: 40px;
-      vertical-align: middle;
-    }
-    h1 {
-      font-size: 40px;
-      color: #00796b;
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-    .feature-card {
-      background-color: #ffffff;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease forwards;
-    }
-    .feature-card:hover {
-      transform: translateY(-5px);
-    }
-    .feature-title {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #00695c;
-    }
-    .footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #e0f7fa;
-      margin-top: 60px;
-    }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    .gallery img {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s ease forwards;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      border-radius: 15px;
-      width: 300px;
-    }
-    .gallery img:nth-child(2) { animation-delay: 0.2s; }
-    .gallery img:nth-child(3) { animation-delay: 0.4s; }
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 20px;
-      }
-      
-      h1 {
-        font-size: 28px;
-      }
-      .features {
-        grid-template-columns: 1fr;
-      }
-      .gallery img {
-        width: 100% !important;
-      }
-    }
-    .header-buttons {
-      display: flex;
-      gap: 10px;
-    }
-    
-    .main-content > div:last-of-type {
-      display: none;
-    }
-    .footer-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
- 
-    .feature-card, .gallery img {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .feature-card:hover, .gallery img:hover {
-      transform: scale(1.03);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    }
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 32px;
-        text-align: center;
-      }
-      .main-content {
-        padding: 20px;
-      }
-      .feature-card {
-        padding: 15px;
-      }
-    }
-    .dark-mode {
-      background: linear-gradient(to right, #121212, #1e1e1e);
-      color: #e0e0e0;
-    }
-    .dark-mode header {
-      background-color: #1f1f1f;
-    }
-    .dark-mode .feature-card {
-      background-color: #2a2a2a;
-    }
-    .dark-mode .login-btn, .dark-mode .register-btn { /* Changed .join-btn to .register-btn */
-      box-shadow: none;
-    }
-    .dark-toggle {
-      cursor: pointer;
-      font-size: 16px;
-      background-color: #00796b;
-      color: white;
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: none;
-    }
-
-    .login-btn, .register-btn {
-      padding: 10px 20px;
-      border-radius: 25px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-size: 16px;
-    }
-
-    .login-btn {
-      background-color: #00796b;
-      color: white;
-      box-shadow: 0 4px 8px rgba(0, 121, 107, 0.3);
-    }
-
-    .register-btn {
-      background-color: #e0f7fa;
-      color: #00796b;
-      border: 2px solid #00796b;
-    }
-
-    .login-btn:hover {
-      background-color: #004d40;
-      box-shadow: 0 6px 12px rgba(0, 121, 107, 0.4);
-    }
-
-    .register-btn:hover {
-      background-color: #c2e9e2;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      flex-wrap: wrap; 
-    }
-
-    .header-controls {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        header {
-            flex-direction: column;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABP Classes - Login / Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
+            min-height: 100vh;
+            margin: 0;
+            color: #333;
         }
-        .header-controls {
-            flex-direction: column;
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
         }
-    }
-  </style>
+        h2 {
+            margin-bottom: 25px;
+            color: #007bff;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #message {
+            color: red;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        .toggle-form {
+            background: none;
+            color: #007bff;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        .toggle-form:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <img alt="ABP Logo" class="logo" src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png"/>
-    <div class="header-controls">
-        <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
-        <button class="login-btn" onclick="window.location.href='login.html'">Login</button>
-        <button class="register-btn" onclick="window.location.href='register.html'">Register</button>
+    <div class="container">
+        <h2>ABP Classes</h2>
+        <div id="auth-form">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button id="login-btn">Login</button>
+            <button id="register-btn">Register</button>
+            <p id="message"></p>
+        </div>
     </div>
-  </header>
-  <div class="main-content">
-    <h1>Welcome to <img alt="ABP" class="logo-inline" src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png"/> ABP Classes</h1>
-    <div class="features">
-      <div class="feature-card">
-        <div class="feature-title">Expert Teachers</div>
-        <p>Highly experienced and qualified faculty dedicated to your success.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Video Lectures</div>
-        <p>Watch quality content anytime, anywhere inside the app.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">PDF Notes</div>
-        <p>Download important study material and reference notes in PDF format.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Student Portal</div>
-        <p>Track your learning progress and access personalized content easily.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-title">Doubt Clearing</div>
-        <p>Ask questions and get them resolved directly by your teacher.</p>
-      </div>
-    </div>
-    <h2 style="margin-top: 60px; color: #004d40;">Gallery</h2>
-    <div class="gallery" style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 20px; justify-content: center;">
-      <img alt="Gallery 1" src="https://i.ibb.co/5hXCyvwK/unnamed-2.webp"/>
-      <img alt="Gallery 2" src="https://i.ibb.co/TjJZbtq/2022-04-23-1.webp"/>
-      <img alt="Gallery 3" src="https://i.ibb.co/HLjyS5KN/2022-04-23.webp"/>
-    </div>
-    <h2 style="margin-top: 80px; text-align: center; font-size: 36px; color: #004d40;">Meet Our Core Team</h2>
-    <p style="text-align: center; font-size: 18px; color: #555; margin-bottom: 40px;">Passionate educators guiding your success</p>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 60px; padding: 0 20px;">
-      <div style="background: #ffffff; padding: 30px 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 280px; text-align: center; transition: transform 0.3s ease;">
-        <img alt="Parmeshwer Verma" src="https://i.ibb.co/bgPGqdFv/Screenshot-20250525-172340-Instagram-Lite.png" style="width: 100%; height: auto; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-radius: 12px;"/>
-        <h3 style="margin-top: 20px; font-size: 22px; color: #00796b;">Parmeshwer Verma</h3>
-        <p style="color: #777; font-size: 16px;">Lead Teacher</p>
-        <p style="font-size: 14px; color: #555;">Dedicated to simplifying complex concepts and mentoring with passion.</p>
-      </div>
-      <div style="background: #ffffff; padding: 30px 20px; border-radius: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); max-width: 280px; text-align: center; transition: transform 0.3s ease;">
-        <img alt="Brijendra Verma" src="https://i.ibb.co/bjx9vvb3/Screenshot-20250525-172747-Instagram-Lite.png" style="width: 100%; height: auto; object-fit: cover; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-radius: 12px;"/>
-        <h3 style="margin-top: 20px; font-size: 22px; color: #00796b;">Brijendra Verma</h3>
-        <p style="color: #777; font-size: 16px;">Director</p>
-        <p style="font-size: 14px; color: #555;">Visionary leader driving innovation and excellence at ABP Classes.</p>
-      </div>
-    </div>
-    <div style="text-align: center; margin-top: 80px;">
-      <h2 style="color: #00796b;">Start Your Learning Journey Today!</h2>
-      <p>Join thousands of students already benefiting from ABP Classes.</p>
-      <button class="login-btn" onclick="window.location.href='register.html'">Join Now</button> 
-    </div>
-  </div>
-  <div class="footer">
-    <p>Powered by <img alt="ABP" class="logo-inline" src="https://i.ibb.co/xSPNBmLN/Screenshot-20250511-223149-Maps-removebg-preview.png"/> ABP Classes | Learning made simple</p>
-    <div class="footer-buttons" style="margin-top: 20px;">
-      
-    </div>
-  </div>
+
+    <script type="module" src="firebase_init.js"></script>
+    <script type="module">
+        import { auth, db, doc, setDoc } from './firebase_init.js';
+        import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        const messageDiv = document.getElementById('message');
+
+        async function registerUser(email, password) {
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Default role is 'student'. Admin can later change roles.
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    role: "student",
+                    createdAt: new Date()
+                });
+
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Registration successful! Redirecting...';
+                redirectToDashboard(user);
+
+            } catch (error) {
+                console.error("Registration Error:", error.code, error.message);
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = `Registration failed: ${error.message}`;
+            }
+        }
+
+        async function loginUser(email, password) {
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Login successful! Redirecting...';
+                redirectToDashboard(user);
+
+            } catch (error) {
+                console.error("Login Error:", error.code, error.message);
+                messageDiv.style.color = 'red';
+                messageDiv.textContent = `Login failed: ${error.message}`;
+            }
+        }
+
+        async function redirectToDashboard(user) {
+            // Get user role from Firestore
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                const userData = userDoc.data();
+                if (userData.role === 'admin') {
+                    window.location.href = 'admin_dashboard.html';
+                } else {
+                    window.location.href = 'student_dashboard.html';
+                }
+            } else {
+                // If user document doesn't exist, something is wrong, default to student.
+                console.warn("User document not found for:", user.uid, "Defaulting to student dashboard.");
+                window.location.href = 'student_dashboard.html';
+            }
+        }
+
+        loginBtn.addEventListener('click', () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            loginUser(email, password);
+        });
+
+        registerBtn.addEventListener('click', () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            registerUser(email, password);
+        });
+
+        // Check auth state on page load to redirect if already logged in
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                redirectToDashboard(user);
+            }
+        });
+    </script>
 </body>
 </html>
