@@ -3,171 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABP Classes - Login / Register</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            color: #333;
-        }
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        h2 {
-            margin-bottom: 25px;
-            color: #007bff;
-        }
-        input[type="email"],
-        input[type="password"] {
-            width: calc(100% - 20px);
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        #message {
-            color: red;
-            margin-top: 15px;
-            font-weight: bold;
-        }
-        .toggle-form {
-            background: none;
-            color: #007bff;
-            border: none;
-            cursor: pointer;
-            text-decoration: underline;
-            font-size: 14px;
-            margin-top: 15px;
-        }
-        .toggle-form:hover {
-            color: #0056b3;
-        }
-    </style>
+    <title>ABP CLASSES - Learn Smarter</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>ABP Classes</h2>
-        <div id="auth-form">
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button id="login-btn">Login</button>
-            <button id="register-btn">Register</button>
-            <p id="message"></p>
+    <header>
+        <nav>
+            <div class="logo">ABP CLASSES</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="login.html" class="btn">Login</a></li>
+                <li><a href="signup.html" class="btn btn-secondary">Sign Up</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <div class="hero-content">
+            <h1>Your Journey to Excellence Starts Here</h1>
+            <p>Access high-quality video lectures, study materials, and expert guidance.</p>
+            <a href="signup.html" class="btn btn-primary">Get Started Today</a>
         </div>
-    </div>
+    </main>
 
-    <script type="module" src="firebase_init.js"></script>
-    <script type="module">
-        import { auth, db, doc, setDoc } from './firebase_init.js';
-        import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+    <footer>
+        <p>&copy; 2024 ABP CLASSES. All rights reserved.</p>
+    </footer>
 
-        const emailInput = document.getElementById('email');
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('login-btn');
-        const registerBtn = document.getElementById('register-btn');
-        const messageDiv = document.getElementById('message');
-
-        async function registerUser(email, password) {
-            try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                // Default role is 'student'. Admin can later change roles.
-                await setDoc(doc(db, "users", user.uid), {
-                    email: user.email,
-                    role: "student",
-                    createdAt: new Date()
-                });
-
-                messageDiv.style.color = 'green';
-                messageDiv.textContent = 'Registration successful! Redirecting...';
-                redirectToDashboard(user);
-
-            } catch (error) {
-                console.error("Registration Error:", error.code, error.message);
-                messageDiv.style.color = 'red';
-                messageDiv.textContent = `Registration failed: ${error.message}`;
-            }
-        }
-
-        async function loginUser(email, password) {
-            try {
-                const userCredential = await signInWithEmailAndPassword(auth, email, password);
-                const user = userCredential.user;
-
-                messageDiv.style.color = 'green';
-                messageDiv.textContent = 'Login successful! Redirecting...';
-                redirectToDashboard(user);
-
-            } catch (error) {
-                console.error("Login Error:", error.code, error.message);
-                messageDiv.style.color = 'red';
-                messageDiv.textContent = `Login failed: ${error.message}`;
-            }
-        }
-
-        async function redirectToDashboard(user) {
-            // Get user role from Firestore
-            const userDoc = await getDoc(doc(db, "users", user.uid));
-            if (userDoc.exists()) {
-                const userData = userDoc.data();
-                if (userData.role === 'admin') {
-                    window.location.href = 'admin_dashboard.html';
-                } else {
-                    window.location.href = 'student_dashboard.html';
-                }
-            } else {
-                // If user document doesn't exist, something is wrong, default to student.
-                console.warn("User document not found for:", user.uid, "Defaulting to student dashboard.");
-                window.location.href = 'student_dashboard.html';
-            }
-        }
-
-        loginBtn.addEventListener('click', () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            loginUser(email, password);
-        });
-
-        registerBtn.addEventListener('click', () => {
-            const email = emailInput.value;
-            const password = passwordInput.value;
-            registerUser(email, password);
-        });
-
-        // Check auth state on page load to redirect if already logged in
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                redirectToDashboard(user);
-            }
-        });
-    </script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
