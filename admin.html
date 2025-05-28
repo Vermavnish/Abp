@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ABP CLASSES</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">ABP CLASSES</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="#">Courses</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li id="dashboardLink" style="display: none;"><a href="dashboard.html">My Dashboard</a></li>
+                    <li id="adminLink"><a href="admin.html">Admin Panel</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <span id="currentUser">Guest</span> |
+                <span id="authLinks" style="display: none;">
+                    <a href="login.html">Login</a>
+                    <a href="signup.html">Signup</a>
+                </span>
+                <span id="userLinks">
+                    <a href="#" id="logoutButton">Logout</a>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Admin Panel</h1>
+
+        <div id="adminMessage" class="alert" style="display: none;"></div>
+
+        <div class="admin-grid">
+            <section class="admin-section">
+                <h2>Add New Batch</h2>
+                <form id="addBatchForm">
+                    <div class="form-group">
+                        <label for="batchName">Batch Name:</label>
+                        <input type="text" id="batchName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="batchDescription">Description (Optional):</label>
+                        <textarea id="batchDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Batch</button>
+                </form>
+                <h3 style="margin-top: 30px;">Existing Batches:</h3>
+                <ul class="list-group" id="existingBatchesList">
+                    </ul>
+            </section>
+
+            <section class="admin-section">
+                <h2>Add New Subject</h2>
+                <form id="addSubjectForm">
+                    <div class="form-group">
+                        <label for="subjectBatchSelect">Select Batch:</label>
+                        <select id="subjectBatchSelect" required>
+                            <option value="">-- Select a Batch --</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name:</label>
+                        <input type="text" id="subjectName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Subject</button>
+                </form>
+                <h3 style="margin-top: 30px;">Existing Subjects:</h3>
+                <select id="viewSubjectsByBatch" class="form-group" style="width: 100%; margin-bottom: 15px;">
+                    <option value="">-- View Subjects by Batch --</option>
+                </select>
+                <ul class="list-group" id="existingSubjectsList">
+                    </ul>
+            </section>
+
+            <section class="admin-section">
+                <h2>Add New Chapter</h2>
+                <form id="addChapterForm">
+                    <div class="form-group">
+                        <label for="chapterBatchSelect">Select Batch:</label>
+                        <select id="chapterBatchSelect" required>
+                            <option value="">-- Select a Batch --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterSubjectSelect">Select Subject:</label>
+                        <select id="chapterSubjectSelect" required disabled>
+                            <option value="">-- Select a Subject --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="chapterName">Chapter Name:</label>
+                        <input type="text" id="chapterName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Chapter</button>
+                </form>
+                <h3 style="margin-top: 30px;">Existing Chapters:</h3>
+                <select id="viewChaptersBySubject" class="form-group" style="width: 100%; margin-bottom: 15px;">
+                    <option value="">-- View Chapters by Subject --</option>
+                </select>
+                <ul class="list-group" id="existingChaptersList">
+                    </ul>
+            </section>
+
+            <section class="admin-section">
+                <h2>Upload Content (Video/PDF)</h2>
+                <form id="uploadContentForm">
+                    <div class="form-group">
+                        <label for="contentBatchSelect">Select Batch:</label>
+                        <select id="contentBatchSelect" required>
+                            <option value="">-- Select a Batch --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentSubjectSelect">Select Subject:</label>
+                        <select id="contentSubjectSelect" required disabled>
+                            <option value="">-- Select a Subject --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentChapterSelect">Select Chapter:</label>
+                        <select id="contentChapterSelect" required disabled>
+                            <option value="">-- Select a Chapter --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentType">Content Type:</label>
+                        <select id="contentType" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="video">Video (YouTube URL)</option>
+                            <option value="pdf">PDF (Direct URL)</option>
+                            </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentTitle">Content Title:</label>
+                        <input type="text" id="contentTitle" required>
+                    </div>
+                    <div class="form-group" id="contentUrlGroup">
+                        <label for="contentUrl">Content URL (Video/PDF):</label>
+                        <input type="url" id="contentUrl" placeholder="e.g., https://www.youtube.com/embed/VIDEO_ID or https://example.com/document.pdf">
+                    </div>
+                    <div class="form-group" id="contentFileGroup" style="display: none;">
+                        <label for="contentFile">Upload PDF File:</label>
+                        <input type="file" id="contentFile" accept=".pdf">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload Content</button>
+                </form>
+                <h3 style="margin-top: 30px;">Existing Contents:</h3>
+                <select id="viewContentsByChapter" class="form-group" style="width: 100%; margin-bottom: 15px;">
+                    <option value="">-- View Contents by Chapter --</option>
+                </select>
+                <ul class="list-group" id="existingContentsList">
+                    </ul>
+            </section>
+
+            <section class="admin-section">
+                <h2>Assign Batch to Student</h2>
+                <div class="form-group">
+                    <label for="assignStudentEmail">Student Email:</label>
+                    <input type="email" id="assignStudentEmail" placeholder="Enter student's registered email" required>
+                    <button type="button" class="btn btn-secondary" id="findStudentBtn" style="margin-top: 10px;">Find Student</button>
+                </div>
+                <div id="foundStudentInfo" style="margin-top: 15px; display: none;">
+                    <p><strong>Student:</strong> <span id="foundStudentName"></span> (<span id="foundStudentEmail"></span>)</p>
+                    <p><strong>Current Batches:</strong> <span id="currentAssignedBatches"></span></p>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="batchToAssignSelect">Select Batch to Assign/Remove:</label>
+                        <select id="batchToAssignSelect">
+                            <option value="">-- Select a Batch --</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-success" id="assignBatchBtn">Assign Batch</button>
+                    <button type="button" class="btn btn-danger" id="removeBatchBtn">Remove Batch</button>
+                </div>
+                <div id="studentNotFoundMessage" class="alert alert-danger" style="display: none;">Student not found.</div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ABP CLASSES. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+    <script type="module" src="admin.js"></script> </body>
+</html>
