@@ -5,7 +5,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"; // Optional
+// import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js"; // Optional
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "abptest3-595bb.firebasestorage.app",
   messagingSenderId: "609413076048",
   appId: "1:609413076048:web:eb0acf7c57909660962d55",
-  measurementId: "G-NG3GBECDEH" // Optional, remove if not using Analytics
+  // measurementId: "G-NG3GBECDEH" // Optional, remove if not using Analytics
 };
 
 // Initialize Firebase
@@ -23,9 +23,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const analytics = getAnalytics(app); // Optional
+// const analytics = getAnalytics(app); // Optional
 
-export { app, auth, db, storage, analytics,
+export { app, auth, db, storage,
          collection, doc, getDoc, getDocs, setDoc, addDoc, updateDoc, deleteDoc, query, where,
          ref, uploadBytes, getDownloadURL, deleteObject
        };
