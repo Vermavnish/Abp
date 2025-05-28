@@ -19,24 +19,35 @@ async function updateAuthUI(user) {
         authLinks.style.display = 'none';
         userLinks.style.display = 'block';
 
-        // Check user's role (assuming you have a 'users' collection with a 'role' field)
         const userDocRef = doc(db, 'users', user.uid);
         const userDocSnap = await getDoc(userDocRef);
+        let userRole = 'student'; // Default role
 
         if (userDocSnap.exists()) {
             const userData = userDocSnap.data();
-            if (userData.role === 'admin') {
-                adminLink.style.display = 'block';
-                dashboardLink.style.display = 'none'; // Admin has different dashboard
-            } else {
-                adminLink.style.display = 'none';
-                dashboardLink.style.display = 'block';
-            }
-        } else {
-             // Default to student if no role defined
-             adminLink.style.display = 'none';
-             dashboardLink.style.display = 'block';
+            userRole = userData.role || 'student'; // Get role, default to student
+            currentUserSpan.textContent = userData.name || user.email; // Show name if available
         }
+
+        // --- NEW REDIRECTION LOGIC HERE ---
+        const currentPage = window.location.pathname.split('/').pop();
+
+        if (userRole === 'admin') {
+            adminLink.style.display = 'block';
+            dashboardLink.style.display = 'none';
+            // If admin is on login/signup page, redirect to admin.html
+            if (currentPage === 'login.html' || currentPage === 'signup.html') {
+                window.location.href = 'admin.html';
+            }
+        } else { // student role
+            adminLink.style.display = 'none';
+            dashboardLink.style.display = 'block';
+            // If student is on login/signup page, redirect to dashboard.html
+            if (currentPage === 'login.html' || currentPage === 'signup.html') {
+                window.location.href = 'dashboard.html';
+            }
+        }
+        // --- END NEW REDIRECTION LOGIC ---
 
     } else {
         currentUserSpan.textContent = 'Guest';
@@ -44,6 +55,14 @@ async function updateAuthUI(user) {
         userLinks.style.display = 'none';
         dashboardLink.style.display = 'none';
         adminLink.style.display = 'none';
+
+        // If not logged in, and trying to access protected pages, redirect to login
+        const protectedPages = ['dashboard.html', 'admin.html'];
+        const currentPage = window.location.pathname.split('/').pop();
+        if (protectedPages.includes(currentPage)) {
+            alert('You must be logged in to access this page.');
+            window.location.href = 'login.html';
+        }
     }
 }
 
@@ -52,7 +71,7 @@ if (logoutButton) {
     logoutButton.addEventListener('click', async () => {
         try {
             await signOut(auth);
-            // Redirec to home or login page after logout
+            // Redirect to home or login page after logout
             window.location.href = 'index.html';
         } catch (error) {
             console.error('Logout error:', error);
@@ -70,11 +89,6 @@ export { auth, db, collection, getDocs, query, where, doc, getDoc, updateAuthUI 
 // Add event listeners for dynamic content on specific pages if needed here
 // Example: If on dashboard.html, call a function to load user batches
 document.addEventListener('DOMContentLoaded', () => {
-    if (window.location.pathname.includes('dashboard.html')) {
-        // We'll add content loading for dashboard here later
-    }
-    if (window.location.pathname.includes('admin.html')) {
-        // We'll add admin specific checks and content loading here later
-    }
+    // These specific page loads are handled within their respective JS files
+    // (dashboard.js, admin.js) which already import from app.js
 });
-
